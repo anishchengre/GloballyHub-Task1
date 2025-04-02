@@ -13,7 +13,7 @@ jobs:
       - name: Install dependencies and build
         run: |
           chmod +x ./dependency_setup.sh
-          ./Task\ 1/dependency_setup.sh
+          ./dependency_setup.sh
         env:
           DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
           DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
@@ -25,7 +25,7 @@ jobs:
       - name: Deploy to server
         run: |
           chmod +x ./project_setup.sh
-          ./Task\ 1/project_setup.sh
+          ./project_setup.sh
         env:
           DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
           DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
