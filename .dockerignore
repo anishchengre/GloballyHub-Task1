@@ -1,0 +1,11 @@
+**/.git
+**/__pycache__
+**/*.pyc
+**/*.pyo
+**/*.mo
+**/*.db
+**/.env
+**/venv
+**/env
+**/node_modules
+**/staticfiles

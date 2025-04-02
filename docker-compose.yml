@@ -1,0 +1,37 @@
+
+services:
+  web:
+    build: .
+    command: gunicorn --bind 0.0.0.0:8000 dockerized_django.wsgi:application
+    volumes:
+      - .:/code
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    depends_on:
+      - db
+
+  db:
+    image: postgres:17-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_DB=dockerized_django
+      - POSTGRES_USER=anishchengre
+      - POSTGRES_PASSWORD=1
+
+  # Uncomment for production
+  # nginx:
+  #   image: nginx:latest
+  #   ports:
+  #     - "80:80"
+  #   volumes:
+  #     - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+  #     - static_volume:/code/static
+  #   depends_on:
+  #     - web
+
+volumes:
+  postgres_data:
+  # static_volume:
