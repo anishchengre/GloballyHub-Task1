@@ -61,7 +61,7 @@ docker push $DOCKERHUB_USERNAME/django-app:$GITHUB_SHA
 
 
 
-### 2. Project Setup Script (`server_setup.sh`)  
+### 3. Project Setup Script (`server_setup.sh`)  
 ```
 #!/bin/bash
 
@@ -77,3 +77,40 @@ docker rm dockerized_django || true
 # Deploy new container
 docker run -d --name dockerized_django -p 8000:8000 anishdchengre/dockerized_django:globally_hub
 ```
+
+### 4. Workflow Configuration (.github/workflows/deploy.yml)
+```
+name: CI/CD Pipeline For Globally Hub
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install dependencies and build
+        run: |
+          chmod +x ./dependency_setup.sh
+          ./dependency_setup.sh
+        env:
+          DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+          DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
+
+  cd:
+    needs: ci
+    runs-on: self-hosted # Use self-hosted runner on your server
+    steps:
+      - name: Deploy to server
+        run: |
+          chmod +x ./project_setup.sh
+          ./project_setup.sh
+        env:
+          DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+          DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
+
+
+```          
