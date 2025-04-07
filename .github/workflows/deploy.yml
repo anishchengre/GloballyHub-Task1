@@ -22,6 +22,9 @@ jobs:
     needs: ci
     runs-on: self-hosted # Use self-hosted runner on your server
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
       - name: Deploy to server
         run: |
           chmod +x ./project_setup.sh
